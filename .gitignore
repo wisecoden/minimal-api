@@ -1,0 +1,62 @@
+## Build results
+bin/
+obj/
+out/
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## OS-generated files
+.DS_Store
+Thumbs.db
+
+## Rider / JetBrains
+.idea/
+
+## VS Code
+.vscode/
+.history/
+
+## ASP.NET / Minimal API
+appsettings.*.json
+
+## Logs
+*.log
+
+## NuGet Packages
+*.nupkg
+*.snupkg
+.nuget/
+
+## Entity Framework / Migrations temp
+*.db
+*.sqlite
+*.mdf
+
+## Others
+*.pidb
+*.pdb
+*.mdb
+*.bak
+*.cache
+*.tmp
+
+## Test Results
+TestResults/
+*.trx
+
+## IIS Express
+.vs/
+*.vspscc
+*.vssscc
+
+## Node (caso use front-end)
+node_modules/
+dist/
+
+## Ignore local secrets
+secrets.json
+
