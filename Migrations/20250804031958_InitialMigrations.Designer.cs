@@ -11,8 +11,8 @@ using MinimalApi.infra.Db;
 namespace minimal_api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250803030459_AdminMigration")]
-    partial class AdminMigration
+    [Migration("20250804031958_InitialMigrations")]
+    partial class InitialMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,42 @@ namespace minimal_api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Admins");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            Email = "adm@teste.com",
+                            Password = "password",
+                            Profile = "Adm"
+                        });
+                });
+
+            modelBuilder.Entity("minimal_api.Domain.Entities.Car", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Age")
+                        .HasMaxLength(10)
+                        .HasColumnType("int");
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cars");
                 });
 #pragma warning restore 612, 618
         }

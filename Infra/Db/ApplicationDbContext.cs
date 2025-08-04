@@ -4,11 +4,24 @@ using minimal_api.Domain.Entities;
 namespace MinimalApi.infra.Db;
 
 public class ApplicationDbContext : DbContext
-{   
+{
     private readonly IConfiguration _configurationAppSettings;
     public ApplicationDbContext(IConfiguration configurationAppSettings)
     {
         _configurationAppSettings = configurationAppSettings;
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Admin>().HasData(
+            new Admin
+            {
+                Id = "1",
+                Email = "adm@teste.com",
+                Password = "password",
+                Profile = "Adm"
+            }
+       );
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -22,5 +35,6 @@ public class ApplicationDbContext : DbContext
             }
         }
     }
-     public DbSet<Admin> Admins { get; set; } = default!;
+    public DbSet<Admin> Admins { get; set; } = default!;
+    public DbSet<Car> Cars { get; set; } = default!;
 };
