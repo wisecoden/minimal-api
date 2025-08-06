@@ -21,11 +21,13 @@ namespace minimal_api.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("minimal_api.Domain.Entities.Admin", b =>
+            modelBuilder.Entity("minimal_api.Domain.Entities.Administrator", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -44,29 +46,25 @@ namespace minimal_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Admins");
+                    b.ToTable("Administrators");
 
                     b.HasData(
                         new
                         {
-                            Id = "1",
+                            Id = 1,
                             Email = "adm@teste.com",
                             Password = "password",
                             Profile = "Adm"
                         });
                 });
 
-            modelBuilder.Entity("minimal_api.Domain.Entities.Car", b =>
+            modelBuilder.Entity("minimal_api.Domain.Entities.Vehicle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Age")
-                        .HasMaxLength(10)
-                        .HasColumnType("int");
 
                     b.Property<string>("Brand")
                         .IsRequired()
@@ -78,9 +76,13 @@ namespace minimal_api.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("varchar(150)");
 
+                    b.Property<int>("Year")
+                        .HasMaxLength(10)
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Cars");
+                    b.ToTable("vehicles");
                 });
 #pragma warning restore 612, 618
         }

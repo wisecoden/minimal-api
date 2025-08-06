@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using minimal_api.Domain.Entities;
 using minimal_api.Domain.Interfaces;
 using minimal_api.Domain.Services;
+using minimal_api.Domain.ViewModels;
+using MinimalApi.Domain.Enums;
 using MinimalApi.Domain.ViewModels;
 using MinimalApi.DTOs;
 using MinimalApi.infra.Db;
@@ -10,8 +12,8 @@ using MinimalApi.infra.Db;
 #region Builder Configuration
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IAdminService, AdminService>();
-builder.Services.AddScoped<ICarService, CarService>();
+builder.Services.AddScoped<IAdministratorService, AdministratorService>();
+builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -35,65 +37,172 @@ app.MapGet("/", () => Results.Json(new HomeViewModel())).WithTags("Home");
 
 #region Admins
 
-app.MapPost("/admins/login", ([FromBody] LoginDTO loginDTO, IAdminService adminService) =>
+app.MapPost("/admins/login", ([FromBody] LoginDTO loginDTO, IAdministratorService administratorService) =>
 {
-    if (adminService.Login(loginDTO) != null)
+    if (administratorService.Login(loginDTO) != null)
         return Results.Ok("Login successful");
     else
         return Results.Unauthorized();
 }).WithTags("Admins");
-#endregion
-#region Cars
 
-app.MapPost("/cars", ([FromBody] CarDTO carDTO, ICarService carService) =>
+app.MapGet("/admins", ([FromQuery] int? page, IAdministratorService administratorService) =>
 {
-    var car = new Car
+    var admins = new List<AdministratorViewModel>();
+
+    var administrators = administratorService.GetAllAdministrators(page);
+
+    foreach (var adm in administrators)
     {
-        Name = carDTO.Name,
-        Brand = carDTO.Brand,
-        Age = carDTO.Age
+        admins.Add(new AdministratorViewModel
+        {
+            Id = adm.Id,
+            Email = adm.Email,
+            Profile =  adm.Profile
+            
+        });
     };
-    carService.Add(car);
 
-    return Results.Created($"/car/{car.Id}", car);
-}).WithTags("Cars");
+    if (admins == null || !admins.Any())
+        return Results.NotFound("No admins found");
 
-app.MapGet("/cars", ([FromQuery] int? page, ICarService carService) =>
+    return Results.Ok(admins);
+}).WithTags("Admins");
+
+app.MapGet("/admins/{id}", ([FromRoute]int id, IAdministratorService administratorService) =>
 {
-    var cars = carService.GetAllCars(page);
-    return Results.Ok(cars);
-}).WithTags("Cars");
+    var administrator = administratorService.GetAdministratorById(id);
+    if (administrator == null) return Results.NotFound("No admins found");
 
-app.MapGet("/cars/{id}", ([FromRoute]int id, ICarService carService) =>
+    return Results.Ok(new AdministratorViewModel
+        {
+            Id = administrator.Id,
+            Email = administrator.Email,
+            Profile =  administrator.Profile
+            
+        });
+}).WithTags("Admins");
+
+app.MapPost("/admins", ([FromBody] AdministratorDTO administratorDTO, IAdministratorService administratorService) =>
 {
-    var car = carService.GetCarById(id);
+    var validations = new ValidationErrosViewModel
+    {
+        Messages = new List<string>()
+    };
+    if (string.IsNullOrEmpty(administratorDTO.Email))
+        validations.Messages.Add("Email is required");
 
-    if (car == null) return Results.NotFound("Car not found");
+    if (string.IsNullOrEmpty(administratorDTO.Password))
+        validations.Messages.Add("Password is required");
+    if (administratorDTO.Profile == null)
+        validations.Messages.Add("Profile is required");
 
-    return Results.Ok(car);
-}).WithTags("Cars");
 
-app.MapPut("/cars/{id}", ([FromBody] CarDTO carDTO, [FromRoute] int id, ICarService carService) =>
+
+    if (validations.Messages.Count() > 0)
+        return Results.BadRequest(validations);
+
+    var administrator = new Administrator
+    {
+        Email = administratorDTO.Email,
+        Password = administratorDTO.Password,
+        Profile = administratorDTO.Profile.ToString() ?? Profile.Editor.ToString()
+    };
+   
+    administratorService.Add(administrator);
+
+    
+    return Results.Created($"/admin/{administrator.Id}", new AdministratorViewModel
+        {
+            Id = administrator.Id,
+            Email = administrator.Email,
+            Profile =  administrator.Profile
+            
+        });
+}).WithTags("Admins");
+#endregion
+#region vehicles
+
+ValidationErrosViewModel validationDTO(VehicleDTO VehicleDTO)
 {
-    var car = carService.GetCarById(id);
-    if (car == null) return Results.NotFound("Car not found");
+    var validations = new ValidationErrosViewModel
+    {
+        Messages = new List<string>()
+    };
 
-    car.Name = carDTO.Name;
-    car.Brand = carDTO.Brand;
-    car.Age = carDTO.Age;
+    if (string.IsNullOrEmpty(VehicleDTO.Name))
+        validations.Messages.Add("Name is required");
 
-    carService.Update(car);
-    return Results.Ok(car);
-}).WithTags("Cars");
+    if (string.IsNullOrEmpty(VehicleDTO.Brand))
+        validations.Messages.Add("Brand is required");
 
-app.MapDelete("/cars/{id}", ([FromRoute] int id, ICarService carService) =>
+    var yearLimit = 1950;
+    if (VehicleDTO.Year < yearLimit)
+        validations.Messages.Add("Vehicle year must be between 1950 and 2025.");
+    
+
+    return validations;
+}
+
+app.MapPost("/Vehicles", ([FromBody] VehicleDTO VehicleDTO, IVehicleService VehicleService) =>
 {
-    var car = carService.GetCarById(id);
-    if (car == null) return Results.NotFound("Car not found");
+    var validations = validationDTO(VehicleDTO);
+    if (validations.Messages.Count() > 0)
+        return Results.BadRequest(validations);
 
-    carService.Remove(car);
+    var Vehicle = new Vehicle
+    {
+        Name = VehicleDTO.Name,
+        Brand = VehicleDTO.Brand,
+        Year = VehicleDTO.Year
+    };
+    VehicleService.Add(Vehicle);
+
+    return Results.Created($"/Vehicle/{Vehicle.Id}", Vehicle);
+}).WithTags("Vehicles");
+
+app.MapGet("/Vehicles", ([FromQuery] int? page, IVehicleService VehicleService) =>
+{
+    var Vehicles = VehicleService.GetAllVehicles(page);
+    return Results.Ok(Vehicles);
+}).WithTags("Vehicles");
+
+app.MapGet("/Vehicles/{id}", ([FromRoute]int id, IVehicleService VehicleService) =>
+{
+    var Vehicle = VehicleService.GetVehicleById(id);
+    if (Vehicle == null) return Results.NotFound("Vehicle not found");
+
+    return Results.Ok(Vehicle);
+}).WithTags("Vehicles");
+
+app.MapPut("/Vehicles/{id}", ([FromBody] VehicleDTO VehicleDTO, [FromRoute] int id, IVehicleService VehicleService) =>
+{
+    var Vehicle = VehicleService.GetVehicleById(id);
+    if (Vehicle == null)
+        return Results.NotFound("Vehicle not found");
+
+    var validations = validationDTO(VehicleDTO);
+    if (validations.Messages.Count() > 0)
+        return Results.BadRequest(validations);
+
+
+    Vehicle.Name = VehicleDTO.Name;
+    Vehicle.Brand = VehicleDTO.Brand;
+    Vehicle.Year = VehicleDTO.Year;
+    
+   
+
+    VehicleService.Update(Vehicle);
+    return Results.Ok(Vehicle);
+}).WithTags("Vehicles");
+
+app.MapDelete("/Vehicles/{id}", ([FromRoute] int id, IVehicleService VehicleService) =>
+{
+    var Vehicle = VehicleService.GetVehicleById(id);
+    if (Vehicle == null) return Results.NotFound("Vehicle not found");
+
+    VehicleService.Remove(Vehicle);
     return Results.NoContent();
-}).WithTags("Cars");
+}).WithTags("Vehicles");
 #endregion
 
 

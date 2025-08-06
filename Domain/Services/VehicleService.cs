@@ -10,23 +10,23 @@ using MinimalApi.infra.Db;
 
 namespace minimal_api.Domain.Services
 {
-  public class CarService : ICarService
+  public class VehicleService : IVehicleService
   {
     private readonly ApplicationDbContext _dbContext;
-    public CarService(ApplicationDbContext dbcontext)
+    public VehicleService(ApplicationDbContext dbcontext)
         {
             _dbContext = dbcontext;
         }
 
-    public void Add(Car car)
+    public void Add(Vehicle vehicle)
     {
-        _dbContext.Cars.Add(car);
+        _dbContext.vehicles.Add(vehicle);
         _dbContext.SaveChanges();
     }
 
-    public List<Car> GetAllCars(int? page = 1, string? name = null, string? brand = null)
+    public List<Vehicle> GetAllVehicles(int? page = 1, string? name = null, string? brand = null)
     {
-      var query = _dbContext.Cars.AsQueryable();
+      var query = _dbContext.vehicles.AsQueryable();
       if (!string.IsNullOrEmpty(name))
       {
         query = query.Where(c => EF.Functions.Like(c.Name.ToLower(), $"%{name.ToLower()}%"));
@@ -46,20 +46,20 @@ namespace minimal_api.Domain.Services
       return query.ToList();
     }
 
-    public Car? GetCarById(int id)
+    public Vehicle? GetVehicleById(int id)
     {
-      return _dbContext.Cars.Where(c => c.Id == id).FirstOrDefault();
+      return _dbContext.vehicles.Where(c => c.Id == id).FirstOrDefault();
     }
 
-    public void Remove(Car car)
+    public void Remove(Vehicle Vehicle)
     {
-       _dbContext.Cars.Remove(car);
+       _dbContext.vehicles.Remove(Vehicle);
        _dbContext.SaveChanges();
     }
 
-    public void Update(Car car)
+    public void Update(Vehicle vehicle)
     {
-        _dbContext.Cars.Update(car);
+        _dbContext.vehicles.Update(vehicle);
         _dbContext.SaveChanges();
     }
   }

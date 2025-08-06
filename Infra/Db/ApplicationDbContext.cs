@@ -13,10 +13,10 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Admin>().HasData(
-            new Admin
+        modelBuilder.Entity<Administrator>().HasData(
+            new Administrator
             {
-                Id = "1",
+                Id = 1,
                 Email = "adm@teste.com",
                 Password = "password",
                 Profile = "Adm"
@@ -35,6 +35,6 @@ public class ApplicationDbContext : DbContext
             }
         }
     }
-    public DbSet<Admin> Admins { get; set; } = default!;
-    public DbSet<Car> Cars { get; set; } = default!;
+    public DbSet<Administrator> Administrators { get; set; } = default!;
+    public DbSet<Vehicle> vehicles { get; set; } = default!;
 };
