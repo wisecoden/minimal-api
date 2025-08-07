@@ -51,9 +51,9 @@ namespace minimal_api.Domain.Services
       return _dbContext.vehicles.Where(c => c.Id == id).FirstOrDefault();
     }
 
-    public void Remove(Vehicle Vehicle)
+    public void Remove(Vehicle vehicle)
     {
-       _dbContext.vehicles.Remove(Vehicle);
+       _dbContext.vehicles.Remove(vehicle);
        _dbContext.SaveChanges();
     }
 
