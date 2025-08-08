@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace minimal_api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,7 +54,7 @@ namespace minimal_api.Migrations
             migrationBuilder.InsertData(
                 table: "Administrators",
                 columns: new[] { "Id", "Email", "Password", "Profile" },
-                values: new object[] { 1, "adm@teste.com", "password", "Adm" });
+                values: new object[] { 1, "adm@teste.com", "password", "Admin" });
         }
 
         /// <inheritdoc />

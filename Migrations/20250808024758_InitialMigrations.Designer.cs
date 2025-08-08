@@ -11,8 +11,8 @@ using MinimalApi.infra.Db;
 namespace minimal_api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250806021213_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250808024758_InitialMigrations")]
+    partial class InitialMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,7 +57,7 @@ namespace minimal_api.Migrations
                             Id = 1,
                             Email = "adm@teste.com",
                             Password = "password",
-                            Profile = "Adm"
+                            Profile = "Admin"
                         });
                 });
 

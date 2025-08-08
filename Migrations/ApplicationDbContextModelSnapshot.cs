@@ -54,7 +54,7 @@ namespace minimal_api.Migrations
                             Id = 1,
                             Email = "adm@teste.com",
                             Password = "password",
-                            Profile = "Adm"
+                            Profile = "Admin"
                         });
                 });
 

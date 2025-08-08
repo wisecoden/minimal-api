@@ -19,7 +19,7 @@ public class ApplicationDbContext : DbContext
                 Id = 1,
                 Email = "adm@teste.com",
                 Password = "password",
-                Profile = "Adm"
+                Profile = "Admin"
             }
        );
     }
