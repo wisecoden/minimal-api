@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MinimalApi.Domain.Enums;
 
-namespace minimal_api.Domain.ViewModels
+namespace  MinimalApi.Domain.ViewModels
 {
     public record LoggedAdministratorViewModel
     {   

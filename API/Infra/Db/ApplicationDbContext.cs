@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using minimal_api.Domain.Entities;
+using  MinimalApi.Domain.Entities;
 
-namespace MinimalApi.infra.Db;
+namespace MinimalApi.Infra.Db;
 
 public class ApplicationDbContext : DbContext
 {
@@ -13,15 +13,7 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Administrator>().HasData(
-            new Administrator
-            {
-                Id = 1,
-                Email = "adm@teste.com",
-                Password = "password",
-                Profile = "Admin"
-            }
-       );
+       
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

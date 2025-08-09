@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using minimal_api.Domain.Entities;
-using minimal_api.Domain.Interfaces;
+using MinimalApi.Domain.Entities;
+using MinimalApi.Domain.Interfaces;
 using MinimalApi.DTOs;
-using MinimalApi.infra.Db;
+using MinimalApi.Infra.Db;
 
-namespace minimal_api.Domain.Services
+namespace  MinimalApi.Domain.Services
 {
   public class VehicleService : IVehicleService
   {

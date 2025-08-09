@@ -1,0 +1,40 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using MinimalApi.Domain.Entities;
+using MinimalApi.Domain.Interfaces;
+using MinimalApi.Domain.Services;
+using MinimalApi.Domain.ViewModels;
+using MinimalApi.Domain.Enums;
+using MinimalApi.DTOs;
+using MinimalApi.infra.Db;
+
+#region Builder Configuration
+var builder = WebApplication.CreateBuilder(args);
+
+var key = builder.Configuration["Jwt"];
+if (string.IsNullOrEmpty(key)) key = "password";
+
+
+
+var app = builder.Build();
+
+#endregion
+
+
+
+
+#region App
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.Run();
+#endregion

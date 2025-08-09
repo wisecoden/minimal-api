@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace minimal_api.Domain.ViewModels
+namespace  MinimalApi.Domain.ViewModels
 {
     public class ValidationErrosViewModel
-    {   
-        public List<string> Messages { get; set; }
+    {
+        public List<string> Messages { get; set; } = default!;
     }
     
 }
