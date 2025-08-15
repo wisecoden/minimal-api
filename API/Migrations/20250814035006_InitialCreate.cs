@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace minimal_api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigrations : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,7 +34,7 @@ namespace minimal_api.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "vehicles",
+                name: "Vehicles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -47,14 +47,14 @@ namespace minimal_api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_vehicles", x => x.Id);
+                    table.PrimaryKey("PK_Vehicles", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.InsertData(
                 table: "Administrators",
                 columns: new[] { "Id", "Email", "Password", "Profile" },
-                values: new object[] { 1, "adm@teste.com", "password", "Admin" });
+                values: new object[] { 1, "administrador@teste.com", "password", "Admin" });
         }
 
         /// <inheritdoc />
@@ -64,7 +64,7 @@ namespace minimal_api.Migrations
                 name: "Administrators");
 
             migrationBuilder.DropTable(
-                name: "vehicles");
+                name: "Vehicles");
         }
     }
 }

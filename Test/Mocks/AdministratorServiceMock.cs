@@ -13,17 +13,11 @@ public class AdministratorServiceMock : IAdministratorService
             Password = "password",
             Profile = "Admin"
         },
-        new Administrator{
-            Id = 2,
-            Email = "editor@teste.com",
-            Password = "password",
-            Profile = "Editor"
-        }
     };
 
     public Administrator? GetAdministratorById(int id)
     {
-        return administrators.Find(a => a.Id == id);
+        return administrators.Find(v => v.Id == id);
     }
 
     public Administrator Add(Administrator administrator)

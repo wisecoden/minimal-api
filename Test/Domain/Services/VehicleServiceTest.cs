@@ -8,7 +8,7 @@ using MinimalApi.Infra.Db;
 namespace Test.Domain.Entities;
 
 [TestClass]
-public class AdministratorServiceTest
+public class VehicleServiceTest
 {
     private ApplicationDbContext CreateTestDbContext()
     {
@@ -26,50 +26,51 @@ public class AdministratorServiceTest
     }
 
     [TestMethod]
-    public void TestSaveAdministrator()
+    public void TestSaveVehicle()
     {
         // Arrange
         var context = CreateTestDbContext();
-        context.Database.ExecuteSqlRaw("TRUNCATE TABLE administrators");
+        context.Database.ExecuteSqlRaw("TRUNCATE TABLE vehicles");
+        
         
 
-        var administrator = new Administrator
+        var vehicle = new Vehicle
         {
-            Email = "test@test.com",
-            Password = "test",
-            Profile = "Admin"
+            Name = "Test Vehicle",
+            Brand = "Test Brand",
+            Year = 2023
         };
 
-        var administratorService = new AdministratorService(context);
+        var vehicleService = new VehicleService(context);
 
         // Act
-        administratorService.Add(administrator);
+        vehicleService.Add(vehicle);
 
         // Assert
-        Assert.AreEqual(administrator.Id, administratorService.GetAllAdministrators(1).Count());
+        Assert.AreEqual(vehicle.Id, vehicleService.GetAllVehicles(1).Count());
     }
 
     [TestMethod]
-    public void TestFindAdministratorById()
+    public void TestFindVehicleById()
     {
         // Arrange
         var context = CreateTestDbContext();
-        context.Database.ExecuteSqlRaw("TRUNCATE TABLE administrators");
+        context.Database.ExecuteSqlRaw("TRUNCATE TABLE vehicles");
 
-        var administrator = new Administrator
+        var vehicle = new Vehicle
         {
-            Email = "test@test.com",
-            Password = "test",
-            Profile = "Admin"
+            Name = "Test Vehicle",
+            Brand = "Test Brand",
+            Year = 2023
         };
 
-        var administratorService = new AdministratorService(context);
+        var vehicleService = new VehicleService(context);
 
         // Act
-        administratorService.Add(administrator);
-        var result = administratorService.GetAdministratorById(administrator.Id);
+        vehicleService.Add(vehicle);
+        var result = vehicleService.GetVehicleById(vehicle.Id);
 
         // Assert
-        Assert.AreEqual(administrator.Id, result?.Id);
+        Assert.AreEqual(vehicle.Id, result?.Id);
     }
 }

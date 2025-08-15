@@ -21,7 +21,7 @@ namespace minimal_api.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("minimal_api.Domain.Entities.Administrator", b =>
+            modelBuilder.Entity("MinimalApi.Domain.Entities.Administrator", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -52,13 +52,13 @@ namespace minimal_api.Migrations
                         new
                         {
                             Id = 1,
-                            Email = "adm@teste.com",
+                            Email = "administrador@teste.com",
                             Password = "password",
                             Profile = "Admin"
                         });
                 });
 
-            modelBuilder.Entity("minimal_api.Domain.Entities.Vehicle", b =>
+            modelBuilder.Entity("MinimalApi.Domain.Entities.Vehicle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,7 +82,7 @@ namespace minimal_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("vehicles");
+                    b.ToTable("Vehicles");
                 });
 #pragma warning restore 612, 618
         }

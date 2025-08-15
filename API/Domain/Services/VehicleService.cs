@@ -20,13 +20,13 @@ namespace  MinimalApi.Domain.Services
 
     public void Add(Vehicle vehicle)
     {
-        _dbContext.vehicles.Add(vehicle);
+        _dbContext.Vehicles.Add(vehicle);
         _dbContext.SaveChanges();
     }
 
     public List<Vehicle> GetAllVehicles(int? page = 1, string? name = null, string? brand = null)
     {
-      var query = _dbContext.vehicles.AsQueryable();
+      var query = _dbContext.Vehicles.AsQueryable();
       if (!string.IsNullOrEmpty(name))
       {
         query = query.Where(c => EF.Functions.Like(c.Name.ToLower(), $"%{name.ToLower()}%"));
@@ -48,18 +48,18 @@ namespace  MinimalApi.Domain.Services
 
     public Vehicle? GetVehicleById(int id)
     {
-      return _dbContext.vehicles.Where(c => c.Id == id).FirstOrDefault();
+      return _dbContext.Vehicles.Where(c => c.Id == id).FirstOrDefault();
     }
 
     public void Remove(Vehicle vehicle)
     {
-       _dbContext.vehicles.Remove(vehicle);
+       _dbContext.Vehicles.Remove(vehicle);
        _dbContext.SaveChanges();
     }
 
     public void Update(Vehicle vehicle)
     {
-        _dbContext.vehicles.Update(vehicle);
+        _dbContext.Vehicles.Update(vehicle);
         _dbContext.SaveChanges();
     }
   }
